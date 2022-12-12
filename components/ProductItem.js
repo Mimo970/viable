@@ -2,21 +2,26 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import { BsPlus, BsEyeFill } from "react-icons/bs";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { ProductsContext } from "../utils/ProductsContext";
+import { CartContext } from "../contexts/CartContext";
+import Image from "next/image";
 
 const Card = ({ product }) => {
   const addToFavorites = (e) => {};
+  // const { state, dispatch } = useContext(ProductsContext);
+  const { addToCart } = useContext(CartContext);
 
-  const addToCartHandler = () => {
-    const existItem = state.cart.cartItems.find((x) => x.id === product.id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
+  // const addToCartHandler = () => {
+  //   const existItem = state.cart.cartItems.find((x) => x.id === product.id);
+  //   const quantity = existItem ? existItem.quantity + 1 : 1;
 
-    if (product.countInStock < quantity) {
-      alert("Sorry. Product is out of stock");
-      return;
-    }
+  //   if (product.rating.count < quantity) {
+  //     alert("Sorry. Product is out of stock");
+  //     return;
+  //   }
 
-    dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity: 1 } });
-  };
+  //   dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity: 1 } });
+  // };
 
   return (
     <>
@@ -26,7 +31,7 @@ const Card = ({ product }) => {
             <div className="w-[200px] mx-auto flex justify-center items-center">
               <img
                 className="max-h-[240px]"
-                src={product.image}
+                src={product.images[0]}
                 alt={product.title}
                 layout="responsive"
               />
@@ -34,7 +39,7 @@ const Card = ({ product }) => {
           </div>
           {/* buttons */}
           <div className="absolute top-6 -right-11 group-hover:right-5 p-2 flex flex-col items-center justify-center gap-y-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button onClick={addToCartHandler}>
+            <button onClick={() => addToCart(product, product.id)}>
               <div className="flex justify-center items-center text-white w-12 h-12 bg-blue-400">
                 <BsPlus className="text-3xl" />
               </div>

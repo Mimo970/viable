@@ -1,14 +1,39 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { ProductsContext } from "../utils/ProductsContext";
+// import { ProductsContext } from "../utils/ProductsContext";
+import { CartContext } from "../contexts/CartContext";
 
 const Layout = ({ title, children }) => {
-  const { state, dispatch } = useContext(ProductsContext);
-  const { cart } = state;
+  // const { state, dispatch } = useContext(ProductsContext);
+  // const { cart } = state;
+  const { cart } = useContext(CartContext);
+
+  const [cartItemsCount, setCartItemsCount] = useState(0);
+  useEffect(() => {
+    setCartItemsCount(cart.length);
+  }, [cart]);
+
+  // const [count, setCount] = useState(0);
+
+  // useLayoutEffect(() => {
+  //   if (sessionStorage.getItem("state")) {
+  //     setCount(parseInt(sessionStorage.getItem("state")));
+  //   } else {
+  //     sessionStorage.setItem("state", count.toString());
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem("state", count.toString());
+  // }, [count]);
+
   return (
     <>
+      {/* <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button> */}
+
       <Head>
         <title>{title ? title + " - Viable" : "Viable"}</title>
         <meta name="description" content="Ecommerce Website" />
@@ -25,12 +50,11 @@ const Layout = ({ title, children }) => {
               <Link legacyBehavior href="/cart">
                 <a className="p-2 flex items-center">
                   <AiOutlineShoppingCart />
-
                   {/* {cart.cartItems.reduce((a, c) => a + c.quantity, 0)} */}
 
-                  {cart.cartItems.length > 0 && (
+                  {cartItemsCount > 0 && (
                     <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      {cartItemsCount}
                     </span>
                   )}
                 </a>

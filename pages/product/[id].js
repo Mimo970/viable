@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import Layout from "../../components/Layout";
-
+import { CartContext } from "../../contexts/CartContext";
 import { ProductsContext } from "../../utils/ProductsContext";
 const ProductDetails = ({ product }) => {
-  const { state, dispatch } = useContext(ProductsContext);
-
+  // const { state, dispatch } = useContext(ProductsContext);
+  const { addToCart } = useContext(CartContext);
   const addToCartHandler = () => {
     const existItem = state.cart.cartItems.find((x) => x.id === product.id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
@@ -24,7 +24,11 @@ const ProductDetails = ({ product }) => {
       {/* <div className="mt-12 flex flex-col  items-center md:flex-row items-start justify-around lg:flex-row "> */}
       <div className=" gap-0 place-items-center justify-center grid md:grid-cols-[500px_minmax(600px,_0px)]">
         <div>
-          <img className="max-h-[480px]" src={product.image} alt="" />
+          <img
+            className="max-h-[480px]"
+            src={product.image}
+            alt={product.title}
+          />
         </div>
         <div className="flex flex-col justify-start max-w-sm">
           <div className="text-lg capitalize text-gray-black mb-0 font-extrabold">
@@ -52,7 +56,7 @@ const ProductDetails = ({ product }) => {
                 {/* <div>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</div> */}
               </div>
               <button
-                onClick={addToCartHandler}
+                onClick={() => addToCart(product, product.id)}
                 className="primary-button w-full"
               >
                 Add to cart
